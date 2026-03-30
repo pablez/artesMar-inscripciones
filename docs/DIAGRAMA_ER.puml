@@ -1,0 +1,152 @@
+@startuml InscripcionesDB
+!theme plain
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+
+title Diagrama Entidad-Relación\nSistema de Inscripciones - Artes Marciales
+
+' ==================== ENTIDADES ====================
+
+entity "👤 USER" as USER {
+  * id: bigint <<PK>>
+  --
+  * name: string
+  * email: string <<UK>>
+  * password: string (hashed)
+  email_verified_at: timestamp
+  remember_token: string
+  created_at: timestamp
+  updated_at: timestamp
+}
+
+entity "📋 INSCRIPCION" as INSCRIPCION {
+  * id: bigint <<PK>>
+  * user_id: bigint <<FK>>
+  * disciplina_id: bigint <<FK>>
+  --
+  * nombre: string
+  * email: string
+  telefono: string
+  categoria: string
+  dias: string [Lun-Vie, Sáb-Dom, etc]
+  hora: string [HH:MM - HH:MM]
+  sucursal: string
+  mensaje: text
+  comprobante: string [path to file]
+  estado_pago: enum [pendiente, pendiente_verificacion, pagado, rechazado]
+  fecha_pago: timestamp
+  notas_admin: text
+  created_at: timestamp
+  updated_at: timestamp
+}
+
+entity "🥋 DISCIPLINA" as DISCIPLINA {
+  * id: bigint <<PK>>
+  * nombre: string <<UK>>
+  --
+  descripcion: text
+  activo: boolean [default: true]
+  created_at: timestamp
+  updated_at: timestamp
+}
+
+entity "⏰ HORARIO" as HORARIO {
+  * id: bigint <<PK>>
+  * disciplina_id: bigint <<FK>>
+  --
+  * titulo: string
+  * dias: string [Lun-Vie, Sáb-Dom, etc]
+  * hora: string [HH:MM - HH:MM]
+  categoria: string
+  sucursal: string
+  descripcion: text
+  created_at: timestamp
+  updated_at: timestamp
+}
+
+entity "🤝 AFILIACION" as AFILIACION {
+  * id: bigint <<PK>>
+  --
+  * titulo: string
+  descripcion: text
+  url: string
+  imagen: string [path to file]
+  created_at: timestamp
+  updated_at: timestamp
+}
+
+entity "⚽ DEPORTE" as DEPORTE {
+  * id: bigint <<PK>>
+  --
+  * nombre: string
+  descripcion: text
+  created_at: timestamp
+  updated_at: timestamp
+}
+
+' ==================== RELACIONES ====================
+
+USER ||--o{ INSCRIPCION : "1:N realiza"
+DISCIPLINA ||--o{ INSCRIPCION : "1:N agrupa"
+DISCIPLINA ||--o{ HORARIO : "1:N contiene"
+
+' ==================== NOTES ====================
+
+note right of USER
+  Usuario del sistema
+  - Puede ser admin o usuario regular
+  - Admin detectado por email en .env: ADMIN_EMAIL
+end note
+
+note right of INSCRIPCION
+  Registro de inscripción a clase
+  - Contiene copia de datos (días, hora, sucursal) 
+    para histórico (snapshot pattern)
+  - horario_actual() busca horario vigente
+    para sincronización viva con cambios
+  - estado_pago con enum: pendiente, pagado, etc
+end note
+
+note right of DISCIPLINA
+  Arte marcial ofrecida
+  - Activo: controla disponibilidad
+  - Sin imagen (a diferencia de Afiliación)
+  - Puede tener múltiples Horarios y Inscripciones
+end note
+
+note right of HORARIO
+  Horario específico de una Disciplina
+  - Asociado a 1 Disciplina (FK optional)
+  - Contiene dias, hora, categoría, sucursal
+  - Modelo de sincronización: cuando cambia,
+    inscripciones lo reflejan automáticamente
+end note
+
+note right of AFILIACION
+  Membresía o afiliación disponible
+  - Sin relaciones (entidad independiente)
+  - Tiene imagen de portada
+  - Principalmente para mostrar en landing page
+end note
+
+note right of DEPORTE
+  Tipo de deporte/arte marcial
+  - Sin relaciones (entidad independiente)
+  - Separado de Disciplina para flexibilidad
+  - Usado en futura categorización
+end note
+
+' ==================== LEYENDA ====================
+
+legend right
+  | Simbolo | Significado |
+  | <<PK>> | Primary Key (Clave Primaria) |
+  | <<FK>> | Foreign Key (Clave Foránea) |
+  | <<UK>> | Unique Key (Clave Única) |
+  | * | Campo obligatorio (NOT NULL) |
+  | 1:N | Relación uno a muchos |
+  | 0:N | Relación cero a muchos |
+end legend
+
+@enduml

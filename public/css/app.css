@@ -1,0 +1,284 @@
+/* ===== reset simple ===== */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Helvetica Neue,Arial,Noto Sans;color:#232323;background:#fafafa}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* ===== helpers ===== */
+.container{max-width:1120px;margin-inline:auto;padding-inline:16px}
+.wrapper{min-height:100dvh;display:flex;flex-direction:column}
+.hidden{display:none}
+.center{display:grid;place-items:center}
+.grid{display:grid;gap:24px}
+.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr}}
+.rounded{border-radius:14px}
+.shadow{box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.card{background:#fff;border-radius:18px;padding:24px;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.mono{font-variant-numeric:tabular-nums}
+
+/* ===== header & nav ===== */
+.header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid #e9e9e9;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.header-inner{height:68px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.02em;transition:transform 0.2s ease}
+.brand:hover{transform:translateY(-1px)}
+.nav{display:flex;gap:4px}
+.nav a{font-size:15px;padding:10px 16px;border-radius:8px;font-weight:500;transition:all 0.2s ease;position:relative;overflow:hidden}
+.nav a:hover{background:#f8f9fa;transform:translateY(-1px)}
+.nav a.active{background:#111;color:#fff}
+.nav a.active:hover{background:#333}
+
+/* Efecto hover mejorado para navegación */
+.nav a:before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:100%;
+  height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);
+  transition:left 0.5s;
+}
+.nav a:hover:before{
+  left:100%;
+}
+
+.menu-btn{display:none;border:0;background:transparent;padding:8px;border-radius:10px}
+.menu-btn:hover{background:#f1f1f1}
+@media (max-width:768px){.nav{display:none}.menu-btn{display:block}}
+.mobile-nav{border-top:1px solid #eee}
+.mobile-link{display:block;padding:10px 12px;border-radius:10px}
+.mobile-link:hover{background:#f1f1f1}
+
+/* ===== Mejoras para redes sociales ===== */
+/* Instagram hover effect */
+a[title*="Instagram"]:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(64, 93, 230, 0.4) !important;
+}
+
+/* Facebook hover effect */
+a[title*="Facebook"]:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(24, 119, 242, 0.4) !important;
+  background: #166FE5 !important;
+}
+
+/* Efectos generales para iconos de redes sociales */
+a[href*="instagram.com"],
+a[href*="facebook.com"] {
+  position: relative;
+  overflow: hidden;
+}
+
+a[href*="instagram.com"]:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.6s;
+}
+
+a[href*="instagram.com"]:hover:before {
+  left: 100%;
+}
+
+a[href*="facebook.com"]:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.6s;
+}
+
+a[href*="facebook.com"]:hover:before {
+  left: 100%;
+}
+
+/* ===== buttons ===== */
+.btn{display:inline-block;padding:12px 18px;border-radius:14px;font-weight:600;border:1px solid #e5e5e5;background:#fff}
+.btn:hover{background:#f4f4f4}
+.btn-primary{background:#111;color:#fff;border-color:#111}
+.btn-primary:hover{background:#000}
+.btn-login{display:inline-block;padding:8px 16px;border-radius:8px;font-weight:600;background:#007bff;color:#fff;font-size:13px;text-decoration:none}
+.btn-login:hover{background:#0056b3;color:#fff}
+
+/* ===== header auth section ===== */
+.auth-section{display:flex;align-items:center;gap:8px;flex-wrap:nowrap}
+.user-name{color:#333;font-weight:500;font-size:13px;padding:6px 10px;background:#f8f9fa;border-radius:5px;border:1px solid #e9ecef;white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis}
+.admin-btn{background:#ff9800 !important;color:white !important;padding:6px 10px !important;font-size:12px !important;text-decoration:none !important;border-radius:5px !important;font-weight:500;transition:all 0.2s ease !important;border:none !important;white-space:nowrap !important}
+.admin-btn:hover{background:#f57c00 !important;transform:translateY(-1px) !important;box-shadow:0 3px 6px rgba(0,0,0,0.1) !important}
+.logout-btn{background:#dc3545 !important;color:white !important;padding:6px 10px !important;font-size:12px !important;text-decoration:none !important;border-radius:5px !important;font-weight:500;transition:all 0.2s ease !important;border:none !important;white-space:nowrap !important}
+.logout-btn:hover{background:#c82333 !important;transform:translateY(-1px) !important;box-shadow:0 3px 6px rgba(0,0,0,0.1) !important}
+.register-btn{background:#28a745 !important;color:white !important;padding:6px 14px !important;font-size:13px !important;text-decoration:none !important;border-radius:5px !important;font-weight:500;transition:all 0.2s ease !important;border:none !important;white-space:nowrap !important}
+.register-btn:hover{background:#218838 !important;transform:translateY(-1px) !important;box-shadow:0 3px 6px rgba(0,0,0,0.1) !important}
+.btn-login{display:inline-block;padding:6px 14px;border-radius:5px;font-weight:600;background:#007bff;color:#fff;font-size:13px;text-decoration:none;white-space:nowrap;transition:all 0.2s ease}
+.btn-login:hover{background:#0056b3;color:#fff;transform:translateY(-1px);box-shadow:0 3px 6px rgba(0,0,0,0.1)}
+.logout-btn:hover{background:#d32f2f !important}
+.register-btn{background:#4caf50 !important;color:white !important;padding:6px 12px !important;font-size:12px !important;text-decoration:none !important;border-radius:4px !important;font-weight:500}
+.register-btn:hover{background:#388e3c !important}
+
+/* ===== sections ===== */
+.section{padding:48px 0}
+.section-lg{padding:64px 0}
+.h1{font-size:clamp(32px,4vw,48px);line-height:1.1;font-weight:800;margin:0}
+.h2{font-size:clamp(26px,3vw,36px);line-height:1.2;font-weight:800;margin:0 0 6px}
+.lead{color:#4a4a4a;font-size:18px}
+.muted{color:#666}
+
+/* ===== table ===== */
+.table{width:100%;border:1px solid #e8e8e8;border-collapse:collapse}
+.table th,.table td{text-align:left;padding:10px 12px;border-bottom:1px solid #eee}
+.table thead{background:#f9f9f9}
+
+/* ===== footer ===== */
+.footer{border-top:1px solid #e9e9e9;background:#fff}
+.footer-grid{display:grid;gap:24px;grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:768px){.footer-grid{grid-template-columns:1fr}}
+.copy{text-align:center;font-size:12px;color:#888;padding:16px 0 24px}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 1024px) {
+  .nav a {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+  .auth-section {
+    gap: 6px;
+  }
+  .user-name {
+    font-size: 12px;
+    padding: 5px 8px;
+    max-width: 100px;
+  }
+  .admin-btn, .logout-btn, .register-btn, .btn-login {
+    font-size: 11px !important;
+    padding: 5px 8px !important;
+  }
+  /* Iconos más pequeños en tablets */
+  a[href*="instagram.com"],
+  a[href*="facebook.com"] {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  a[href*="instagram.com"] svg,
+  a[href*="facebook.com"] svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-inner {
+    height: 60px;
+    padding: 0 12px;
+  }
+  
+  .brand span {
+    font-size: 16px;
+  }
+  
+  .nav {
+    display: none;
+  }
+  
+  .auth-section {
+    gap: 4px;
+    align-items: center;
+  }
+  
+  .user-name {
+    font-size: 11px;
+    padding: 4px 6px;
+    max-width: 80px;
+  }
+  
+  .admin-btn, .logout-btn, .register-btn, .btn-login {
+    font-size: 10px !important;
+    padding: 4px 6px !important;
+  }
+  
+  /* Iconos aún más pequeños en móviles */
+  a[href*="instagram.com"],
+  a[href*="facebook.com"] {
+    width: 30px !important;
+    height: 30px !important;
+  }
+  a[href*="instagram.com"] svg,
+  a[href*="facebook.com"] svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-inline: 12px;
+  }
+  
+  .brand span {
+    display: none;
+  }
+  
+  .auth-section {
+    gap: 3px;
+  }
+  
+  .user-name {
+    max-width: 60px;
+    font-size: 10px;
+  }
+  
+  .admin-btn, .logout-btn, .register-btn, .btn-login {
+    font-size: 9px !important;
+    padding: 3px 5px !important;
+  }
+  
+  /* Iconos mínimos en pantallas muy pequeñas */
+  a[href*="instagram.com"],
+  a[href*="facebook.com"] {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  a[href*="instagram.com"] svg,
+  a[href*="facebook.com"] svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+}
+
+/* ===== componentes ===== */
+.hero{display:grid;gap:24px;grid-template-columns:1.1fr .9fr;align-items:center}
+@media (max-width:900px){.hero{grid-template-columns:1fr}}
+.hero-img{border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,.14);object-fit:cover;width:100%;max-width:540px}
+
+/* labels y forms */
+.label{font-size:12px;color:#777}
+.input,.select,.textarea{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:12px}
+.textarea{resize:vertical}
+
+/* utilidades rápidas */
+.mt-1{margin-top:4px}.mt-2{margin-top:8px}.mt-3{margin-top:12px}.mt-4{margin-top:16px}
+.mt-6{margin-top:24px}.mt-8{margin-top:32px}.mt-12{margin-top:48px}.mt-16{margin-top:64px}
+
+.btn-login {
+    background: black;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.btn-login:hover {
+    background: #444;
+}

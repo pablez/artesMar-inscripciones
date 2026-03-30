@@ -1,1 +1,7 @@
-print("Hey there!")
+import osdef list_folders():
+    for entry in os.listdir('.'):
+        if os.path.isdir(entry):
+            print(entry)
+
+if __name__ == "__main__":
+    list_folders()

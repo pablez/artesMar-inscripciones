@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\InscripcionRequest;  
 use App\Models\Inscripcion;
 use App\Models\Disciplina;
+use App\Models\Horario;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -13,7 +14,8 @@ class InscripcionController extends Controller
     public function create(): View
     {
         $disciplinas = Disciplina::where('activo', true)->get();
-        return view('inscripciones', compact('disciplinas'));
+        $horarios = Horario::with('disciplina')->orderBy('titulo')->get();
+        return view('inscripciones', compact('disciplinas', 'horarios'));
     }
 
     public function store(InscripcionRequest $request)

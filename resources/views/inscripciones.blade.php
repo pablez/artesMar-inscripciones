@@ -2,20 +2,6 @@
 @section('title','Inscripciones — JUGA Martial Arts')
 
 @section('content')
-@php
-  $horarios = [
-    ['disciplina'=>'Jiu Jitsu Kids','categoria'=>'4 a 9 años','dias'=>'Lun / Mié / Vie','hora'=>'16:00–17:00','sucursal'=>'Hupermall'],
-    ['disciplina'=>'Jiu Jitsu Kids','categoria'=>'9 a 14 años','dias'=>'Lun / Mié / Vie','hora'=>'17:30–18:30','sucursal'=>'Segunda circunvalación'],
-    ['disciplina'=>'Box','categoria'=>'14+','dias'=>'Mar / Jue','hora'=>'18:30–19:30','sucursal'=>'Segunda circunvalación'],
-    ['disciplina'=>'Jiu Jitsu Adultos','categoria'=>'14+','dias'=>'Lun a Vie','hora'=>'06:00–07:00','sucursal'=>'Segunda circunvalación'],
-    ['disciplina'=>'Jiu Jitsu Adultos','categoria'=>'14+','dias'=>'Lun a Vie','hora'=>'18:30–19:30','sucursal'=>'Segunda circunvalación'],
-    ['disciplina'=>'Jiu Jitsu Adultos','categoria'=>'14+','dias'=>'Lun a Vie','hora'=>'19:30–20:30','sucursal'=>'Segunda circunvalación'],
-    ['disciplina'=>'MMA','categoria'=>'14+','dias'=>'Lun / Mié / Vie','hora'=>'08:30–09:30','sucursal'=>'Segunda circunvalación'],
-    ['disciplina'=>'Funcional y acondicionamiento','categoria'=>'14+','dias'=>'Lun a Vie','hora'=>'10:00–12:00','sucursal'=>'Segunda circunvalación'],
-    ['disciplina'=>'Karate y Kick Boxing','categoria'=>'14+','dias'=>'Lun / Mié','hora'=>'06:00–07:00','sucursal'=>'Segunda circunvalación'],
-    ['disciplina'=>'Karate y Kick Boxing','categoria'=>'14+','dias'=>'Lun / Mié','hora'=>'18:30–19:30','sucursal'=>'Segunda circunvalación'],
-  ];
-@endphp
 
 <section class="section">
   <div class="container" style="max-width:720px">
@@ -128,19 +114,22 @@
           <label class="label">Horario Preferido</label>
           <select name="horario" class="mt-2 select" required>
             <option value="" disabled {{ old('horario') ? '' : 'selected' }}>Selecciona un horario…</option>
-            @foreach (collect($horarios)->groupBy('disciplina') as $disciplina => $items)
-              <optgroup label="{{ $disciplina }}">
+            @forelse ($horarios->groupBy('disciplina.nombre') as $disciplina => $items)
+              <optgroup label="{{ $disciplina ?? 'Sin disciplina asignada' }}">
                 @foreach ($items as $h)
                   @php
-                    $value = implode('|', [$h['disciplina'],$h['categoria'],$h['dias'],$h['hora'],$h['sucursal']]);
-                    $label = "{$h['categoria']} — {$h['dias']} — {$h['hora']} — {$h['sucursal']}";
+                    $disciplinaNombre = $h->disciplina ? $h->disciplina->nombre : 'Sin disciplina';
+                    $value = implode('|', [$disciplinaNombre, $h->categoria, $h->dias, $h->hora, $h->sucursal]);
+                    $label = "{$h->categoria} — {$h->dias} — {$h->hora} — {$h->sucursal}";
                   @endphp
                   <option value="{{ $value }}" {{ old('horario') == $value ? 'selected' : '' }}>
                     {{ $label }}
                   </option>
                 @endforeach
               </optgroup>
-            @endforeach
+            @empty
+              <option value="" disabled>No hay horarios disponibles</option>
+            @endforelse
           </select>
           @error('horario')
             <div class="mt-1" style="color:#b00020">{{ $message }}</div>
